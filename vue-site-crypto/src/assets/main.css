@@ -1,0 +1,17 @@
+ body{
+  /* background: linear-gradient(151deg, rgba(6,48,177,1) 0%, rgba(7,10,84,1) 100%); */
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+  background-color: rgb(212, 235, 255);
+
+ }
+ .box
+ {
+    width: 90vw;
+    max-width: 1200px;
+    margin: auto;
+ }
+ h1{
+    text-align: center;
+    font-size: 3em;
+ }
