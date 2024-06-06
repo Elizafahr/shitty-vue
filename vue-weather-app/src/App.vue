@@ -124,8 +124,8 @@ export default {
         <button v-else disabled>Enter city</button>
       </div>
       <div class="icon-weather"></div>
-      <h1>{{ tempInfo }}</h1>
-      <h4>{{ currentDay }}, {{ currentTime }}</h4>
+      <h1 class="tempInfo">{{ tempInfo }}</h1>
+      <h4 class="infoDayTime">{{ currentDay }}, {{ currentTime }}</h4>
     </div>
     <div class="main">
       <p class="error">{{ error }}</p>
@@ -258,4 +258,16 @@ body {
 .weather-details > * {
   margin-bottom: 0.5rem;
 }
+.tempInfo{
+  margin-top: 20px !important;
+  font-size: 40px;
+  
+
+}
+.infoDayTime{
+  font-size: 20px;
+  color: rgb(49, 49, 49);
+  margin-top: 20px;
+}
+
 </style>
