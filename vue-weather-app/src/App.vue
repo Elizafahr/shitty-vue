@@ -1,8 +1,11 @@
 <script>
 import axios from "axios";
-
+// import detail from "./components/detail.vue";
+ 
 export default {
-  components: {},
+  components: {
+    
+  },
   data() {
     return {
       city: "",
