@@ -53,6 +53,17 @@ export default {
       }
       return "";
     },
+    weatherStatus() {
+      // if (
+      //   this.fullInfo ||
+      //   this.fullInfo.weather||
+      //   this.fullInfo.weather.length > 0
+      // ) {
+      //   return this.fullInfo.weather[0].main ;
+      // } else {
+      //   return "";
+      // }
+    },
   },
   methods: {
     getWeather() {
@@ -69,7 +80,7 @@ export default {
         .then((res) => {
           this.info = res.data.main;
           this.fullInfo = res;
-         })
+        })
         .catch((error) => {
           this.error = "Ошибка при получении погоды: " + error.message;
         });
@@ -118,10 +129,9 @@ export default {
     </div>
     <div class="main">
       <p class="error">{{ error }}</p>
-       <div class="result-container" v-if="info">
+      <div class="result-container" v-if="info">
         <div class="result-card">
           <div class="card-content">
- 
             <!-- <Detail
             :tempInfo="tempInfo"
             :TempFeelsLikeInfo="TempFeelsLikeInfo"
@@ -129,10 +139,12 @@ export default {
             :tempMaxInfo="tempMaxInfo"
           /> -->
             <div class="weather-details">
-               <Detail :TempFeelsLikeInfo="TempFeelsLikeInfo" />
+              <Detail :TempFeelsLikeInfo="TempFeelsLikeInfo" />
               <Detail :tempMinInfo="tempMinInfo" />
               <Detail :tempMaxInfo="tempMaxInfo" />
               <Detail :humidity="humidity" />
+              <Detail :weatherStatus="weatherStatus" />
+              <p>{{weatherStatus}}</p>
             </div>
           </div>
         </div>
@@ -206,7 +218,7 @@ body {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
 }
 
 .error {
@@ -234,7 +246,6 @@ body {
 .card-content {
   text-align: center;
   width: 100%;
-
 }
 
 .weather-details {

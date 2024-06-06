@@ -4,6 +4,7 @@
       <div class="detail"  v-if="tempMinInfo">  {{ tempMinInfo }}</div>
       <div class="detail"  v-if="tempMaxInfo"> {{ tempMaxInfo }}</div>
       <div class="detail"  v-if="humidity"> {{ humidity }} %</div>
+      <div class="detail"  v-if="weatherStatus"> {{ weatherStatus }} %</div>
   </template>
 
 <script>
@@ -26,6 +27,10 @@ export default {
       required: true,
     },
     humidity: {
+      type: String,
+      required: true,
+    },
+    weatherStatus: {
       type: String,
       required: true,
     },
