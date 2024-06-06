@@ -11,6 +11,7 @@ export default {
       city: "",
       error: "",
       info: null,
+      fullInfo: null,
       currentTime: "",
       currentDay: "",
     };
@@ -67,7 +68,8 @@ export default {
         )
         .then((res) => {
           this.info = res.data.main;
-        })
+          this.fullInfo = res;
+         })
         .catch((error) => {
           this.error = "Ошибка при получении погоды: " + error.message;
         });
@@ -114,14 +116,12 @@ export default {
       <h1>{{ tempInfo }}</h1>
       <h4>{{ currentDay }}, {{ currentTime }}</h4>
     </div>
-     <div class="main">
+    <div class="main">
       <p class="error">{{ error }}</p>
-
-      <div class="result-container" v-if="info">
+       <div class="result-container" v-if="info">
         <div class="result-card">
           <div class="card-content">
-            <h2>{{ tempInfo }}</h2>
-
+ 
             <!-- <Detail
             :tempInfo="tempInfo"
             :TempFeelsLikeInfo="TempFeelsLikeInfo"
@@ -129,8 +129,7 @@ export default {
             :tempMaxInfo="tempMaxInfo"
           /> -->
             <div class="weather-details">
-              <Detail :tempInfo="tempInfo" />
-              <Detail :TempFeelsLikeInfo="TempFeelsLikeInfo" />
+               <Detail :TempFeelsLikeInfo="TempFeelsLikeInfo" />
               <Detail :tempMinInfo="tempMinInfo" />
               <Detail :tempMaxInfo="tempMaxInfo" />
               <Detail :humidity="humidity" />
@@ -207,8 +206,7 @@ body {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: center; 
 }
 
 .error {
@@ -223,24 +221,27 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   width: 80%;
-  max-width: 500px;
+  max-width: 1200px;
 }
 
 .result-card {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .card-content {
   text-align: center;
+  width: 100%;
+
 }
 
 .weather-details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 1rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 20px;
 }
 
 .weather-details > * {
