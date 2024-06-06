@@ -1,13 +1,10 @@
 <template>
-  <div class="detail">
-    <h2>{{ tempInfo }}</h2>
-    <div class="weather-details">
-      <div class="detail">Feels Like: {{ TempFeelsLikeInfo }}</div>
-      <div class="detail">Min Temp: {{ tempMinInfo }}</div>
-      <div class="detail">Max Temp: {{ tempMaxInfo }}</div>
-    </div>
-  </div>
-</template>
+     
+      <div class="detail" v-if="TempFeelsLikeInfo"> {{ TempFeelsLikeInfo }}</div>
+      <div class="detail"  v-if="tempMinInfo">  {{ tempMinInfo }}</div>
+      <div class="detail"  v-if="tempMaxInfo"> {{ tempMaxInfo }}</div>
+      <div class="detail"  v-if="humidity"> {{ humidity }} %</div>
+  </template>
 
 <script>
 export default {
@@ -25,6 +22,10 @@ export default {
       required: true,
     },
     tempMaxInfo: {
+      type: String,
+      required: true,
+    },
+    humidity: {
       type: String,
       required: true,
     },

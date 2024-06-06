@@ -1,44 +1,63 @@
 <script>
 import axios from "axios";
-// import detail from "./components/detail.vue";
- 
+import Detail from "./components/details.vue";
+
 export default {
   components: {
-    
+    Detail,
   },
   data() {
     return {
       city: "",
       error: "",
       info: null,
+      currentTime: "",
+      currentDay: "",
     };
+  },
+  created() {
+    this.updateTimeAndDay();
   },
   computed: {
     cityName() {
       return "«" + this.city + "»";
     },
     tempInfo() {
-      return "Температура: " + this.info.feels_like;
+      if (this.info) {
+        return "" + this.info.temp;
+      }
+      return "";
     },
     TempFeelsLikeInfo() {
-      return "Ощущается как: " + this.info.feels_like;
+      if (this.info) {
+        return "Ощущается как: " + this.info.feels_like;
+      }
+      return "";
     },
     tempMinInfo() {
-      return "Минимальная температура: " + this.info.temp_min;
+      if (this.info) {
+        return "Минимальная температура: " + this.info.temp_min;
+      }
+      return "";
     },
     tempMaxInfo() {
-      return "Максимальная температура: " + this.info.temp_max;
+      if (this.info) {
+        return "Максимальная температура: " + this.info.temp_max;
+      }
+      return "";
+    },
+    humidity() {
+      if (this.info) {
+        return "Относительная влажность: " + this.info.humidity;
+      }
+      return "";
     },
   },
   methods: {
-    //Заменили на более современный и легкий способ
-    // putCity(value){
-    //   this.city= value
-    // },
     getWeather() {
       if (this.city.trim().length < 2) {
         this.error = "Нужно название > 1 символа!!";
-        return false;
+        return;
       }
       this.error = "";
 
@@ -46,33 +65,76 @@ export default {
         .get(
           `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=92d6379a601b02e340d0912bbcdd923d`
         )
-        .then((res) => (this.info = res.data.main));
+        .then((res) => {
+          this.info = res.data.main;
+        })
+        .catch((error) => {
+          this.error = "Ошибка при получении погоды: " + error.message;
+        });
+    },
+    updateTimeAndDay() {
+      const currentDate = new Date();
+      this.currentTime = this.formatTime(currentDate);
+      this.currentDay = this.getDayOfWeek(currentDate.getDay());
+    },
+    formatTime(date) {
+      return `${date.getHours()}:${date
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}`;
+    },
+    getDayOfWeek(dayIndex) {
+      const daysOfWeek = [
+        "Воскресенье",
+        "Понедельник",
+        "Вторник",
+        "Среда",
+        "Четверг",
+        "Пятница",
+        "Суббота",
+      ];
+      return daysOfWeek[dayIndex];
     },
   },
 };
 </script>
 <template>
   <div class="wrapper">
-    <h1>Weather Forecast</h1>
-    <p class="light">
-      Check the weather in {{ city == "" ? " your city" : cityName }}
-    </p>
-    <div class="search-container">
-      <input type="text" v-model="city" placeholder="Enter city" />
-      <button v-if="city !== ''" @click="getWeather()">Get Weather</button>
-      <button v-else disabled>Enter city</button>
+    <div class="sidebar">
+      <h1>Weather Forecast</h1>
+      <p class="light">
+        Check the weather in {{ city == "" ? " your city" : cityName }}
+      </p>
+      <div class="search-container">
+        <input type="text" v-model="city" placeholder="Enter city" />
+        <button v-if="city !== ''" @click="getWeather()">Get Weather</button>
+        <button v-else disabled>Enter city</button>
+      </div>
+      <div class="icon-weather"></div>
+      <h1>{{ tempInfo }}</h1>
+      <h4>{{ currentDay }}, {{ currentTime }}</h4>
     </div>
-    <p class="error">{{ error }}</p>
+     <div class="main">
+      <p class="error">{{ error }}</p>
 
-    <div class="result-container" v-if="info">
-      <div class="result-card">
-        <div class="card-content">
-          <h2>{{ tempInfo }}</h2>
+      <div class="result-container" v-if="info">
+        <div class="result-card">
+          <div class="card-content">
+            <h2>{{ tempInfo }}</h2>
 
-          <div class="weather-details">
-            <div class="detail">Feels Like: {{ TempFeelsLikeInfo }}</div>
-            <div class="detail">Min Temp: {{ tempMinInfo }}</div>
-            <div class="detail">Max Temp: {{ tempMaxInfo }}</div>
+            <!-- <Detail
+            :tempInfo="tempInfo"
+            :TempFeelsLikeInfo="TempFeelsLikeInfo"
+            :tempMinInfo="tempMinInfo"
+            :tempMaxInfo="tempMaxInfo"
+          /> -->
+            <div class="weather-details">
+              <Detail :tempInfo="tempInfo" />
+              <Detail :TempFeelsLikeInfo="TempFeelsLikeInfo" />
+              <Detail :tempMinInfo="tempMinInfo" />
+              <Detail :tempMaxInfo="tempMaxInfo" />
+              <Detail :humidity="humidity" />
+            </div>
           </div>
         </div>
       </div>
@@ -81,80 +143,107 @@ export default {
 </template>
 
 <style scoped>
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+/* Wrapper Styles */
 .wrapper {
-  max-width: 600px;
-  width: 90vw;
-  height: max-content;
-  border-radius: 50px;
-  background-color: rgb(255, 255, 255);
-  margin: auto;
-  padding: 30px 20px;
-  text-align: center;
-}
-.ligth {
-  color: rgb(70, 70, 70);
-}
-.wrapper h1 {
-  margin-bottom: 10px;
-}
-.wrapper input {
-  margin-top: 30px;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid rgb(82, 82, 82);
-  color: black;
-  font-size: 14px;
-  padding: 5px 15px;
-  outline: none;
-}
-.flex {
   display: flex;
-  justify-content: center;
+  height: 100vh;
 }
-.wrapper input:focus {
-  border-bottom: 2px solid rgb(0, 197, 43);
+
+/* Sidebar Styles */
+.sidebar {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 2rem;
+  text-align: left;
+  flex: 0 0 300px;
 }
-.wrapper button {
-  margin-top: 30px;
-  background: rgb(0, 197, 43);
+
+.sidebar h1 {
+  margin-top: 0;
+}
+
+.light {
+  font-weight: lighter;
+}
+
+.search-container {
+  margin-top: 2rem;
+  display: flex;
+}
+
+.search-container input {
+  padding: 0.5rem;
   border: none;
-  color: rgb(255, 255, 255);
-  font-size: 14px;
-  padding: 10px 15px;
-  border-radius: 5px;
-  margin-left: 10px;
-  transition: 400ms ease;
+  border-radius: 4px 0 0 4px;
+  width: 200px;
+  border: #f0f0f0 1px solid;
 }
-.wrapper button:disabled {
-  background: rgb(122, 122, 122);
+
+.search-container button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #eaeeff;
+  color: #000000;
+  cursor: pointer;
+}
+
+.search-container button:disabled {
+  background-color: #999;
   cursor: not-allowed;
 }
-.wrapper button:hover {
-  background: rgb(0, 95, 21);
-}
-.error {
-  color: red;
-  font-style: italic;
-  margin-top: 30px;
-}
-.res {
-  margin-top: 30px;
+
+/* Main Content Styles */
+.main {
+  flex: 1;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.result-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 80%;
+  max-width: 500px;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-content {
+  text-align: center;
 }
 
 .weather-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
 }
 
-.detail {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  text-align: center;
+.weather-details > * {
+  margin-bottom: 0.5rem;
 }
 </style>
