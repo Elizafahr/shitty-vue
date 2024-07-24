@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
- import headerNav from "./components/blocks/headerNav.vue";
+import headerNav from "./components/blocks/headerNav.vue";
+import footerBlock from "./components/blocks/footer.vue";
 
  
 
@@ -11,5 +12,7 @@ import { RouterLink, RouterView } from "vue-router";
   <headerNav />
 
   <RouterView />
+  <footerBlock />
+
 </template>
  
