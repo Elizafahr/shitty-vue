@@ -6,8 +6,11 @@ import aboutCard from "../components/blocks/aboutCard.vue";
 import myButton from "../components/ui/myButton.vue";
 import myInput from "../components/ui/myInput.vue";
 import Modal from "../components/ui/modal.vue";
+import { blogItems } from "@/components/posts";
+import blogItemsComponent from "../components/blocks/blog/blogItems.vue";
 
 export default {
+  // Регистрация всех импортированных компонентов
   components: {
     servicesCard,
     myButton,
@@ -16,6 +19,7 @@ export default {
     price,
     benefits,
     myInput,
+    blogItemsComponent,
   },
   data() {
     return {
@@ -27,13 +31,13 @@ export default {
             "If you are going to use a passage offer Lorem Ipsum, you need to be sure hidden in the middle of text.",
         },
         {
-          title: "Spa & Massage",
+          title: "Hair & Beauty",
           image: "Image-2.png",
           description:
             "If you are going to use a passage offer Lorem Ipsum, you need to be sure hidden in the middle of text.",
         },
         {
-          title: "Spa & Massage",
+          title: "Body Treatments",
           image: "Image-3.png",
           description:
             "If you are going to use a passage offer Lorem Ipsum, you need to be sure hidden in the middle of text.",
@@ -53,7 +57,9 @@ export default {
           image: "about-icon-03.svg",
         },
       ],
-      modalVisibly: false,
+
+      modalVisibly: false, // Флаг для управления видимостью модального окна
+      posts: blogItems, // Посты блога, импортированные из внешнего источника
 
       priceItems: [
         {
@@ -84,6 +90,7 @@ export default {
     };
   },
   methods: {
+    // Метод для открытия модального окна
     showModal() {
       this.modalVisibly = true;
     },
@@ -93,6 +100,7 @@ export default {
 
 <template>
   <main>
+    <!-- главный экран -->
     <div class="first-screen wrapper">
       <div class="left">
         <h1>Beauty is power a smile is its sword.</h1>
@@ -100,14 +108,16 @@ export default {
           There are many variation of passages are Ipsum available, majority
           have suffered alteration in some form.
         </p>
-        <myButton class="green">Make a reservation</myButton>
+        <myButton @click="$router.push(`contact`)" class="green"
+          >Make a reservation</myButton
+        >
       </div>
       <div class="rigth">
         <img src="../assets/images/main-page.png" alt="" />
       </div>
     </div>
+    <!-- услуги -->
     <div class="services-cards wrapper">
-      <!-- Измените на следующее -->
       <servicesCard
         class="serviceCard"
         v-for="serviceCard in services"
@@ -138,7 +148,7 @@ export default {
         </div>
       </div>
     </div>
-
+    <!-- прайс с услугами -->
     <div class="services wrapper">
       <h2>We are Experienced in making you very Beautiful</h2>
       <div class="grid">
@@ -151,37 +161,49 @@ export default {
         <img src="../assets/images/services-Image-02.png" alt="" />
       </div>
     </div>
-
+    <!-- преимущества -->
     <div class="benefits wrapper">
       <h2>Actually what you’ll get from</h2>
       <benefits />
     </div>
-
+    <!-- связаться -->
     <div class="contact">
       <div class="wrapper">
-           <div class="rigth">
-            <h2>Claim upto 50% off er on ‍the most popular services...</h2>
-            <p>
-              There are many variations of passages of Lorem Ipsum available,
-              but the majority have suffered alteration in some form, buying to
-              injected humour, or randomised words.
-            </p>
-          </div>
-          <div class="left">
-            <form action="">
-              <myInput type="text" placeholder="Name"></myInput>
-              <myInput type="email" placeholder="Email"></myInput>
-              <myInput type="text" placeholder="Phone"></myInput>
-              <myInput type="text" placeholder="Service You Need"></myInput>
-              <textarea
-                name="notes"
-                id=""
-                placeholder="Any Note For Us"
-              ></textarea>
-              <myButton class="green">GET AN APPOINTMENT</myButton>
-            </form>
-         </div>
+        <div class="rigth">
+          <h2>Claim upto 50% off er on ‍the most popular services...</h2>
+          <p>
+            There are many variations of passages of Lorem Ipsum available, but
+            the majority have suffered alteration in some form, buying to
+            injected humour, or randomised words.
+          </p>
+        </div>
+        <div class="left">
+          <form action="">
+            <myInput type="text" placeholder="Name"></myInput>
+            <myInput type="email" placeholder="Email"></myInput>
+            <myInput type="text" placeholder="Phone"></myInput>
+            <myInput type="text" placeholder="Service You Need"></myInput>
+            <textarea
+              name="notes"
+              id=""
+              placeholder="Any Note For Us"
+            ></textarea>
+            <myButton class="green" style="width: 100%"
+              >GET AN APPOINTMENT</myButton
+            >
+          </form>
+        </div>
       </div>
+    </div>
+    <div class="blog wrapper flex column center">
+      <h2>Latest Updates</h2>
+      <blogItemsComponent class="blogItems" :posts="posts"></blogItemsComponent>
+      <myButton
+        class="transparent"
+        @click="$router.push(`blog`)"
+        style="width: max-content; margin: auto"
+        >VIEW MORE STORIES</myButton
+      >
     </div>
   </main>
 </template>
@@ -218,29 +240,37 @@ export default {
   gap: 20px;
   margin-top: 20px;
 }
-.grid {
-  display: grid;
-  grid-template-columns: 50% 48%;
-  justify-content: space-between;
-}
-.grid img {
-  width: 100%;
+
+@media (max-width: 600px) {
+  .contact .wrapper,
+  .about .wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  myInput,
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 textarea {
   display: block;
   width: 100%;
   padding: 10px;
   border: 1px solid #5c8692;
-   margin-bottom: 20px;
-   box-sizing: border-box;
-
+  margin-bottom: 20px;
+  box-sizing: border-box;
 }
-form{
+form {
   padding: 66px 55px;
   box-shadow: 0 20px 40px 0 rgba(42, 68, 75, 0.13);
   background: #fff;
   max-width: 450px !important;
   box-sizing: border-box;
-
+}
+.blogItems {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
 </style>

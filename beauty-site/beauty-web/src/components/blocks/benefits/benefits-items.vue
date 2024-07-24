@@ -75,5 +75,16 @@ export default {
   align-content: start;
   text-align: left;
 }
- 
+@media (max-width: 1000px) {
+  .benefits-cards {
+     grid-template-columns: repeat(2, minmax(300px, 350px));
+  
+  }
+}
+@media (max-width: 700px) {
+  .benefits-cards {
+     grid-template-columns: repeat(1, minmax(300px, 350px));
+  
+  }
+}
 </style>

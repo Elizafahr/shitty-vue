@@ -16,6 +16,7 @@ button,
 input[type="button"],
 input[type="submin"],
 .btn {
+  margin-top: 20px !important;
   padding: 15px 30px;
   outline: none;
   border: none;
