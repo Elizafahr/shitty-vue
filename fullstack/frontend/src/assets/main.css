@@ -1,0 +1,95 @@
+ 
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px 0;
+}
+
+header {
+  padding: 20px;
+  background-color: #f8f9fa; /* Светло-серый фон */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень под заголовком */
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+nav a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333; /* Темный цвет текста */
+}
+
+nav a:hover {
+  color: #007bff; /* Цвет при наведении */
+}
+
+/* Анимация перехода для RouterLink */
+.router-link-active {
+  font-weight: bold;
+} 
+
+
+
+/* Общие настройки для кнопок */
+.button {
+  border-radius: 5px; /* Скругленные углы */
+  font-weight: bold; /* Жирный шрифт */
+  transition: background-color 0.3s ease; /* Анимация изменения цвета фона */
+  padding: 5px 15px;
+  width: max-content;
+}
+
+/* Специфичные стили для зеленой кнопки добавления */
+.button.is-success {
+  background-color: #28a745; /* Зеленый цвет */
+  color: white;
+}
+
+/* Специфичные стили для синей кнопки редактирования */
+.button.is-info {
+  background-color: #17a2b8; /* Синий цвет */
+  color: white;
+}
+
+/* Специфичные стили для красной кнопки удаления */
+.button.is-danger {
+  background-color: #dc3545; /* Красный цвет */
+  color: white;
+}
+
+ 
+.field {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.control {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  max-width: 300px;
+}
+ 
+.button:hover {
+ opacity: 0.8;
+} 
