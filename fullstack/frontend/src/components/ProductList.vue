@@ -1,35 +1,51 @@
 <template>
   <div class="wrapper">
-    <router-link :to="{ name: 'Create' }" class="button is-success mt-5"
-      >Add New</router-link
+    <h2 class="text-xl font-semibold mb-4">Наши товары</h2>
+    <router-link
+      style="width: max-content !important"
+      :to="{ name: 'Create' }"
+      class="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-max"
     >
-    <table class="table is-striped is-bordered mt-2 is-fullwidth">
-      <thead>
-        <tr>
-          <th>Product Name</th>
-          <th>Price</th>
-          <th class="has-text-centered">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in items" :key="item.product_id">
-          <td>{{ item.product_name }}</td>
-          <td>{{ item.product_price }}</td>
-          <td class="has-text-centered actions-buttons">
+      Add New
+    </router-link>
+    <div class="flex gap-4">
+      
+      <input
+        type="text"
+        class="border rounded-md py-2 pl-11 pr-4 outline-none focus:border-gray-400"
+        placeholder="   Search input"
+        v-model="searchQuery"
+      />
+    </div>
+    <div class="bg-white mt-5 p-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div
+        v-for="item in onChangeSearchInput"
+        :key="item.product_id"
+        class="border border-gray-200 rounded-lg overflow-hidden shadow"
+      >
+          <div class="p-4">
+            <h3 class="text-lg font-semibold">{{ item.product_name }}</h3>
+            <p class="text-gray-500">{{ item.product_color }}</p>
+            <p class="text-lg font-bold">${{ item.product_price }}</p>
+          </div>
+          <div class="flex justify-end p-2">
             <router-link
               :to="{ name: 'Edit', params: { id: item.product_id } }"
-              class="button is-info is-small"
-              >Edit</router-link
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
+              Edit
+            </router-link>
             <a
-              class="button is-danger is-small"
               @click="deleteProduct(item.product_id)"
-              >Delete</a
+              class="ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              Delete
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -42,6 +58,7 @@ export default {
   data() {
     return {
       items: [],
+      searchQuery: "",
     };
   },
 
@@ -68,6 +85,18 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+    
+  },
+  computed: {
+    onChangeSearchInput() {
+      return this.items.filter(
+        (item) =>
+          !this.searchQuery ||
+          item.product_name
+            .toLowerCase()
+            .includes(this.searchQuery.toLowerCase())
+      );
     },
   },
 };
